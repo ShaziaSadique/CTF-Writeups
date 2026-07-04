@@ -1,11 +1,33 @@
-# TryHackMe 🕵️‍♀️
+# Content Discovery
 
-This section contains my notes and writeups from **TryHackMe labs**.  
-Each folder documents a specific room with commands, screenshots, and findings.
+## Overview
 
-## Labs
-https://tryhackme.com/room/contentdiscoveryx
+**Platform:** TryHackMe
+**Category:** Web Security
 
----
+## Objective
 
-⚠️ *Educational use only. All tasks were performed in legal TryHackMe environments.*
+Learned techniques to discover hidden content on web servers using manual methods, OSINT, and automated tools.
+
+## Skills Practiced
+
+* Web Enumeration
+* Content Discovery
+* OSINT
+* Directory Brute Forcing
+
+## Tools Used
+
+* Gobuster
+* FFUF
+* Browser
+* Curl
+
+## Key Takeaways
+
+* Performed manual and automated content discovery.
+* Explored `robots.txt` and `sitemap.xml`.
+* Learned how hidden files and directories can be identified.
+* Understood defensive measures to reduce information exposure.
+
+> **Disclaimer:** Completed in an authorized TryHackMe lab for educational purposes.
