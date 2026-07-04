@@ -87,5 +87,7 @@ Basic Command
 gobuster vhost -u http://<target-ip> --domain example.com -w /path/to/wordlist
 
 Subdomain: Exists as a DNS record (e.g., `blog.example.com`).
+
 Virtual Host: Hosted on the same IP and identified using the HTTP `Host` header.
+
 -----------------------------------------------------------------------------------------------------------------------
