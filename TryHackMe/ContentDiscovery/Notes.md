@@ -53,14 +53,14 @@ Amazon Simple Storage Service is a cloud storage platform that many organisation
 *## Gobuster*
 Gobuster is an open-source enumeration tool used to discover hidden directories, files, and web pages on a target website. It uses a wordlist to send requests to the web server and identifies accessible resources based on the server's responses.
 
-Basic Command
+*Basic Command*
 gobuster dir -u http://<target-ip> -w /path/to/wordlist
 
-Useful Flags
+*Useful Flags*
 
--> -t : Number of threads
--> -w : Wordlist
--> -o : Save output
--> -x : Search file extensions
--> `-r` : Follow redirects
+- `-t` : Number of threads
+- `-w` : Wordlist
+- `-o` : Save output
+- `-x` : Search file extensions
+- `-r` : Follow redirects
 
