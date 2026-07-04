@@ -19,7 +19,6 @@ It includes Server and X-Powered-By that expose the web server software and lagu
 Explore the page source and copyright issues for the framework that is used.
 
 -----------------------------------------------------------------------------------------------------------------------
-
 ## OSINT - Search Engines & Web Tools
 *OSINT*
 Open-Source Intelligence is the process of gathering publicly available information about a target without directly interacting with it.
@@ -37,7 +36,6 @@ It is a browser extension and online tool that helps to find a website's framewo
 
 -----------------------------------------------------------------------------------------------------------------------
 ## OSINT - Repositories & Archives
-
 *Wayback Machine*
 It is used for finding pages that have been removed from the live site but may still be accessible.
 
@@ -49,7 +47,6 @@ Amazon Simple Storage Service is a cloud storage platform that many organisation
 
 -----------------------------------------------------------------------------------------------------------------------
 ## Automated Discovery - Gobuster Fundamentals
-
 *Gobuster*
 Gobuster is an open-source enumeration tool used to discover hidden directories, files, and web pages on a target website. It uses a wordlist to send requests to the web server and identifies accessible resources based on the server's responses.
 
@@ -64,3 +61,31 @@ Useful Flags
 - `-x` : Search file extensions
 - `-r` : Follow redirects
 
+-----------------------------------------------------------------------------------------------------------------------
+## Automated Discovery - Subdomains & Virtual Hosts
+*Subdomain Enumeration*
+Subdomain enumeration identifies subdomains of a target domain that may host separate applications or services with different security configurations.
+
+*Gobuster DNS Mode*
+Gobuster's `dns` mode brute-forces subdomains using a wordlist.
+
+Basic Command
+gobuster dns -d example.com -w /path/to/wordlist
+
+Useful Flags
+
+- `-d` : Target domain
+- `-w` : Wordlist
+- `-i` : Show IP addresses
+- `-r` : Custom DNS resolver
+
+*Virtual Host Enumeration*
+
+Virtual hosts allow multiple websites to run on the same IP address. Gobuster's vhost mode discovers hidden websites by testing different Host headers.
+
+Basic Command
+gobuster vhost -u http://<target-ip> --domain example.com -w /path/to/wordlist
+
+Subdomain: Exists as a DNS record (e.g., `blog.example.com`).
+Virtual Host: Hosted on the same IP and identified using the HTTP `Host` header.
+-----------------------------------------------------------------------------------------------------------------------
