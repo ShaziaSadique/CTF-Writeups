@@ -16,9 +16,7 @@ Http headers are revealed when the web server responds to a request
 It includes Server and X-Powered-By that expose the web server software and laguage/framework the application runs on.
 
 ## Framework Stack
-
-
-
+Explore the page source and copyright issues for the framework that is used.
 
 -----------------------------------------------------------------------------------------------------------------------
 
