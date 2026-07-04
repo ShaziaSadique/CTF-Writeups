@@ -6,7 +6,7 @@ Sitemap.xml file was found in http://MACHINE_IP/sitemap.xml
 -----------------------------------------------------------------------------------------------------------------------
 
 Manual Discovery - Headers & Framework Stack
-Get Information on the Headers using -> *curl http://10.48.136.104 -v*
+Get Information on the Headers using -> *curl http://MACHINE_IP -v*
 
 -----------------------------------------------------------------------------------------------------------------------
 
