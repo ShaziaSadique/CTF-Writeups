@@ -9,6 +9,12 @@ Category: Web Application Security Fundamentals
 Learned techniques to discover hidden content on web servers using manual methods, OSINT, and automated tools.
 
 **Skills Practiced**
-S
+
+**Tools Used**
+
+**Key Takeaways**
+
+
+
 
 
