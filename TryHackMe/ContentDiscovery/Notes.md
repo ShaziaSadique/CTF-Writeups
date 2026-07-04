@@ -1,26 +1,16 @@
 ## Manual Discovery-Common Files
-*Robots.txt*
-- A file that tells search engines which parts of a site they can or cannot index.
-- Sometimes admins list sensitive folders here (e.g., `/staff-portal`).
+*Robots.txt* is a file that tells search engines which parts of a site they can or cannot index. Sometimes admins list sensitive folders here (e.g., `/staff-portal`).
 
-*Sitemap.xml*
-- A file that lists all the pages the site owner wants search engines to know about.
-- Can reveal hidden or sensitive endpoints (e.g., `/customers/login`, `/s3cr3t-area`).
-- Also shows parameters like `id=` in URLs, which hint at possible input points to test.
-- Useful for mapping the attack surface quickly during reconnaissance.
+*Sitemap.xml* is a file that lists all the pages the site owner wants search engines to know about. Can reveal hidden or sensitive endpoints (e.g., `/customers/login`, `/s3cr3t-area`). Also shows parameters like `id=` in URLs, which hint at possible input points to test. Useful for mapping the attack surface quickly during reconnaissance.
 
 -----------------------------------------------------------------------------------------------------------------------
 ## Manual Discovery - Headers & Framework Stack
-*HTTP Headers*
-Http headers are revealed when the web server responds to a request
-It includes Server and X-Powered-By that expose the web server software and laguage/framework the application runs on.
+*HTTP Headers* are revealed when the web server responds to a request. It includes Server and X-Powered-By that expose the web server software and laguage/framework the application runs on.
 
-*Framework Stack*
 Explore the page source and copyright issues for the framework that is used.
 
 -----------------------------------------------------------------------------------------------------------------------
 ## OSINT - Search Engines & Web Tools
-*OSINT*
 Open-Source Intelligence is the process of gathering publicly available information about a target without directly interacting with it.
  `site:` | Search within a specific website
  `inurl:` | Find pages with a word in the URL
@@ -31,23 +21,17 @@ Open-Source Intelligence is the process of gathering publicly available informat
 Example:
 site:tryhackme.com filetype:pdf
 
-*Wappalyzer*
-It is a browser extension and online tool that helps to find a website's frameworks, CMS platforms, CDNs, etc 
+*Wappalyzer* is a browser extension and online tool that helps to find a website's frameworks, CMS platforms, CDNs, etc 
 
 -----------------------------------------------------------------------------------------------------------------------
 ## OSINT - Repositories & Archives
-*Wayback Machine*
-It is used for finding pages that have been removed from the live site but may still be accessible.
-
-*Github*
+*Wayback Machine* is used for finding pages that have been removed from the live site but may still be accessible.
 Search public GitHub repositories for exposed credentials, configuration files, and sensitive data. Review commit history, as deleted secrets may still exist in older commits.
 
-*S3 Buckets*
-Amazon Simple Storage Service is a cloud storage platform that many organisations use to host files and static website content. 
+Amazon Simple Storage Service(*S3 Buckets*) is a cloud storage platform that many organisations use to host files and static website content. 
 
 -----------------------------------------------------------------------------------------------------------------------
 ## Automated Discovery - Gobuster Fundamentals
-*Gobuster*
 Gobuster is an open-source enumeration tool used to discover hidden directories, files, and web pages on a target website. It uses a wordlist to send requests to the web server and identifies accessible resources based on the server's responses.
 
 Basic Command
@@ -63,10 +47,8 @@ Useful Flags
 
 -----------------------------------------------------------------------------------------------------------------------
 ## Automated Discovery - Subdomains & Virtual Hosts
-*Subdomain Enumeration*
 Subdomain enumeration identifies subdomains of a target domain that may host separate applications or services with different security configurations.
 
-*Gobuster DNS Mode*
 Gobuster's `dns` mode brute-forces subdomains using a wordlist.
 
 Basic Command
@@ -79,7 +61,7 @@ Useful Flags
 - `-i` : Show IP addresses
 - `-r` : Custom DNS resolver
 
-*Virtual Host Enumeration*
+*Virtual Host Enumeration -*
 
 Virtual hosts allow multiple websites to run on the same IP address. Gobuster's vhost mode discovers hidden websites by testing different Host headers.
 
