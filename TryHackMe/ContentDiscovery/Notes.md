@@ -48,7 +48,7 @@ Search public GitHub repositories for exposed credentials, configuration files, 
 Amazon Simple Storage Service is a cloud storage platform that many organisations use to host files and static website content. 
 
 -----------------------------------------------------------------------------------------------------------------------
-*Automated Discovery - Gobuster Fundamentals*
+## Automated Discovery - Gobuster Fundamentals
 
 *Gobuster*
 Gobuster is an open-source enumeration tool used to discover hidden directories, files, and web pages on a target website. It uses a wordlist to send requests to the web server and identifies accessible resources based on the server's responses.
