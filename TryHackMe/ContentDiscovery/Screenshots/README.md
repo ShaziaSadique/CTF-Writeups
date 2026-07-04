@@ -10,3 +10,7 @@ Get Information on the Headers using -> *curl http://MACHINE_IP -v*
 
 -----------------------------------------------------------------------------------------------------------------------
 
+Automated Discovery - Gobuster Fundamentals
+Gobuster is an open-source enumeration tool written in Go.
+Get Hidden files using gobuster dir -u "http://MACHINE_IP" -w /path/to/wordlist
+
