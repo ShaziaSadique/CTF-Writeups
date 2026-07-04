@@ -1,6 +1,6 @@
 Manual Discovery-Common Files
 
-Robots.txt file was found in *http://machine_ip/robots.txt*.
+Robots.txt file was found in *http://machine_ip/robots.txt*.  
 Sitemap.xml file was found in *http://machine_ip/sitemap.xml*
 
 -----------------------------------------------------------------------------------------------------------------------
