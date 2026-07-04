@@ -1,5 +1,5 @@
 ## Manual Discovery-Common Files
-*## Robots.txt*
+*##Robots.txt*
 - A file that tells search engines which parts of a site they can or cannot index.
 - Sometimes admins list sensitive folders here (e.g., `/staff-portal`).
 
