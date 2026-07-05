@@ -104,3 +104,79 @@ Checked for publicly accessible Amazon S3 buckets using common company naming pa
 **Q:** What URL format do Amazon S3 buckets end in?
 
 **A:** `.s3.amazonaws.com`
+----------------------------------------------------------------------------------------------
+## Automated Discovery – Gobuster Fundamentals
+
+Used **Gobuster** to discover hidden directories and files on the target web server using a wordlist.
+
+**Command**
+
+```bash
+gobuster dir -u http://<target-ip> -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt
+```
+
+**Observation**
+
+- Discovered hidden directories such as `/assets`, `/private`, and `/monthly`.
+- Found accessible pages including `/contact` and `/news`.
+- Identified a log file: `/development.log`.
+- Located `robots.txt` and `sitemap.xml`, providing additional reconnaissance information.
+- 
+## Answers
+
+**Q:** What is the name of the directory beginning with `/mo` that was discovered?
+
+**A:** `/monthly`
+
+**Q:** What is the name of the log file that was discovered?
+
+**A:** `/development.log`
+
+----------------------------------------------------------------------------------------------------------------
+## Automated Discovery – Subdomains & Virtual Hosts
+
+Used **Gobuster** to enumerate subdomains and virtual hosts, helping identify additional applications and services associated with the target.
+
+### DNS Enumeration
+
+Performed DNS brute-forcing to discover subdomains using a wordlist.
+
+**Command**
+
+```bash
+gobuster dns -d example.thm -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt --wildcard
+```
+
+**Observation**
+
+Discovered several subdomains, including:
+
+- `shop.example.thm`## Answers
+
+**Q:** Apart from `dns` and `-w`, which shorthand flag is required for DNS mode?
+
+**A:** `-d`
+
+**Q:** How many virtual hosts on `acmeitsupport.thm` responded with **HTTP 200**?
+
+**A:** `3`
+- `www.shop.example.thm`
+- `academy.example.thm`
+- `primary.example.thm`
+
+  
+### Virtual Host Enumeration
+
+Performed virtual host enumeration to identify hidden websites hosted on the same IP address.
+
+**Command**
+
+```bash
+gobuster vhost -u http://<target-ip> --domain example.thm -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt --append-domain --exclude-length 250-320
+```
+
+**Observation**
+
+- Identified virtual hosts responding with **HTTP 200 OK**.
+- Virtual host enumeration helps discover hidden applications that are not publicly listed in DNS.
+
