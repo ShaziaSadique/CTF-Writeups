@@ -34,7 +34,7 @@ curl http://<target-ip> -v
 - Detected the `X-Powered-By` header, revealing the **THM Framework**.
 - Found a custom `X-FLAG` header containing the lab flag.
 
-## Framework Stack
+### Framework Stack
 
 Investigated the framework used by the application by reviewing the page source and following the documentation link.
 
