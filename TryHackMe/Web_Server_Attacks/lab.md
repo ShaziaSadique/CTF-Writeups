@@ -112,3 +112,66 @@ unzip backup.zip
 **Q:** What is the flag found inside the backup archive?
 
 **A:** `THM{py_server_exposed}`
+
+---------------
+## Apache Web Server
+
+Investigated an Apache web server to identify common misconfigurations and exposed resources.
+
+### Version Disclosure
+
+Retrieved the HTTP response headers to identify the Apache version.
+
+**Command**
+
+```bash
+curl -sI http://<target-ip>:80
+```
+
+**Observation**
+
+- Identified the web server as **Apache**.
+- The `Server` header revealed the Apache version and operating system.
+
+### Directory Listing
+
+Accessed a directory with indexing enabled.
+
+**Observation**
+
+- Directory listing was enabled under `/files/`.
+- Identified downloadable files that could expose sensitive information.
+
+### Server Status
+
+Accessed the Apache `server-status` page.
+
+**Observation**
+
+- The `mod_status` page exposed server statistics, active connections, and server information.
+### Gobuster Enumeration
+
+Used Gobuster to discover hidden files and directories.
+
+**Command**
+
+```bash
+gobuster dir -u http://<target-ip>:80 -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -x bak,txt -t 20
+```
+
+**Observation**
+
+- Discovered `/backup.bak`.
+- Retrieved the backup file, which contained sensitive configuration information and credentials.
+
+## Answers
+
+**Q:** What Apache module exposes real-time server statistics at `/server-status`?
+
+**A:** `mod_status`
+
+**Q:** What is the flag found in the `/files/` directory?
+
+**A:** `THM{apache_dir_listing}`
+
+----
