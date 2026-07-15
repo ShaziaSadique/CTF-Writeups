@@ -1,0 +1,47 @@
+# What is Privilege Escalation
+
+## Definition
+Privilege escalation (PrivEsc) is the process of exploiting a bug, design flaw, or misconfiguration in an OS or application to gain elevated access to resources that are normally restricted from a user.
+
+## Types
+
+**Vertical Privilege Escalation**
+- Low-privilege user → higher-privilege user (e.g. `www-data` → `root`)
+- Most common goal in CTFs (get root/SYSTEM shell)
+
+**Horizontal Privilege Escalation**
+- Same privilege level, different account (e.g. user A → user B's files/session)
+
+## Typical CTF Flow
+```
+Initial foothold (low-priv shell)
+   ↓
+Enumeration (system, users, files, services)
+   ↓
+Identify misconfiguration/vulnerability
+   ↓
+Exploit
+   ↓
+Root / SYSTEM shell
+```
+
+## Common Linux PrivEsc Vectors
+| Vector | Root Cause |
+|---|---|
+| Kernel exploits | Outdated/vulnerable kernel |
+| Sudo misconfig | Weak `sudoers` rules, GTFOBins-abusable binaries |
+| SUID/SGID binaries | Misconfigured or vulnerable setuid binaries |
+| Capabilities | Linux capabilities set on binaries (e.g. `cap_setuid`) |
+| Cron jobs | Writable scripts/paths run by root on schedule |
+| PATH hijacking | Writable directories early in `$PATH`, relative calls |
+| NFS misconfig | `no_root_squash` exported shares |
+| Weak file permissions | World-writable `/etc/passwd`, `/etc/shadow`, config files |
+| Credentials in files | Hardcoded passwords, SSH keys, history files |
+
+## Golden Rule
+> **Enumerate before you exploit.** Most CTF boxes are solved by finding the one misconfiguration, not by 0-days.
+
+## Key Mindset
+- Check the obvious things first (SUID, sudo -l, cron)
+- Automate the boring enumeration, exploit manually
+- Always confirm kernel/OS version before assuming a kernel exploit is needed
