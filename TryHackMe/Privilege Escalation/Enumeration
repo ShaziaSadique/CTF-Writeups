@@ -1,0 +1,106 @@
+# Enumeration (Manual)
+
+## System Info
+
+```bash
+hostname                    # shows the machine's hostname
+uname -a                    # prints all system info: kernel name, version, architecture
+cat /etc/os-release         # shows the Linux distro name and version
+cat /proc/version           # shows kernel version and compiler used to build it
+lscpu                       # displays CPU architecture details
+```
+
+## User / Group Info
+
+```bash
+whoami                       # shows the current logged-in username
+id                           # shows current user's UID, GID, and group memberships
+sudo -l                      # lists commands the current user is allowed to run with sudo
+cat /etc/passwd              # lists all system user accounts
+cat /etc/group               # lists all groups and their members
+history                      # shows previously run commands (may leak passwords/paths)
+w ; who                      # shows who is currently logged in and what they're doing
+```
+
+## SUID / SGID Binaries
+
+```bash
+find / -perm -u=s -type f 2>/dev/null      # finds all files with the SUID bit set
+find / -perm -g=s -type f 2>/dev/null      # finds all files with the SGID bit set
+find / -perm -4000 -type f 2>/dev/null     # same as SUID search, using octal permission notation
+```
+
+## Capabilities
+
+```bash
+getcap -r / 2>/dev/null      # recursively lists all files with Linux capabilities assigned
+```
+
+## Cron Jobs
+
+```bash
+cat /etc/crontab                                # shows the system-wide scheduled cron jobs
+ls -la /etc/cron.*                              # lists cron directories (hourly/daily/weekly/monthly jobs)
+crontab -l                                      # lists the current user's personal cron jobs
+cat /var/spool/cron/crontabs/* 2>/dev/null      # reads raw crontab files for all users (if readable)
+```
+
+## Writable Files/Dirs
+
+```bash
+find / -writable -type d 2>/dev/null                                   # finds all directories the current user can write to
+find / -writable -type f 2>/dev/null                                   # finds all files the current user can write to
+find / -perm -o+w -type f 2>/dev/null 2>&1 | grep -v proc              # finds world-writable files, excluding noisy /proc entries
+```
+
+## Network
+
+```bash
+ip a ; ifconfig -a            # shows network interfaces and their IP addresses
+netstat -tulpn ; ss -tulpn    # shows listening TCP/UDP ports and the processes using them
+cat /etc/hosts                # shows local hostname-to-IP mappings
+arp -a                        # shows the ARP cache (other devices seen on the local network)
+```
+
+## Processes & Services
+
+```bash
+ps aux                                      # lists all running processes with full details
+ps -ef --forest                             # lists processes in a tree view showing parent-child relationships
+systemctl list-units --type=service         # lists all systemd services and their status
+```
+
+## Installed Software / Versions
+
+```bash
+dpkg -l      # lists installed packages on Debian/Ubuntu systems
+rpm -qa      # lists installed packages on RHEL/CentOS systems
+```
+
+## Interesting Files
+
+```bash
+find / -name "*.conf" -newer /etc/passwd 2>/dev/null      # finds config files modified more recently than /etc/passwd (potentially recently changed)
+find / -name "id_rsa*" 2>/dev/null                        # searches for SSH private key files
+find / -name "*.bak" -o -name "*backup*" 2>/dev/null      # searches for backup files that may contain sensitive data
+cat /etc/fstab                                            # shows filesystems mounted at boot (may reveal NFS shares)
+mount                                                     # shows currently mounted filesystems
+```
+
+## Environment
+
+```bash
+env            # shows all environment variables
+echo $PATH     # shows the directories searched for executable commands, in order
+```
+
+## Quick Checklist
+
+- [ ] Kernel & OS version
+- [ ] `sudo -l` output
+- [ ] SUID/SGID binaries
+- [ ] Capabilities
+- [ ] Cron jobs + writable scripts
+- [ ] World-writable files/dirs
+- [ ] NFS exports (`/etc/exports`)
+- [ ] Credential leftovers (history, config files, `.ssh/`)
