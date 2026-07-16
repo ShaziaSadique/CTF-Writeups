@@ -46,7 +46,7 @@ chmod +x shell.sh
 ```
 
 ### 3. PATH manipulation in cron scripts
-If a cron script calls a binary without full path and `PATH` is user-controllable — see file 09.
+If a cron script calls a binary without full path and `PATH` is user-controllable — see file 09.Path
 
 ### 4. Cron job frequency
 Note the schedule (`* * * * *` format) to time your exploit window.
