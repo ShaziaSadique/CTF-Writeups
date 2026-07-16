@@ -11,7 +11,7 @@ Cheat-sheet style writeups covering Linux PrivEsc enumeration and exploitation, 
 6. [SUID](06-suid.md)
 7. [Capabilities](07-capabilities.md)
 8. [Cron Jobs](08-cron-jobs.md)
-9. [PATH](09-path.md)
+9. [PATH](09.path.md)
 10. [NFS](10-nfs.md)
 
 ## References
