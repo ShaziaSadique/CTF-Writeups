@@ -1,4 +1,4 @@
-# Privilege Escalation: NFS
+#Privilege Escalation: NFS
 
 ## Concept
 NFS (Network File System) shares can be misconfigured with `no_root_squash`, which allows a client's root user to act as root on the exported share — letting you create a SUID binary locally and execute it as root on the target.
